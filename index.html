@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Cek Aset SSB Group</title>
+    <style>
+        /* Desain Sangat Ramah Lansia: Kontras Tinggi, Font Super Besar, Garis Jelas */
+        :root {
+            --primary: #1e3a8a;
+            --success: #14532d;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #64748b;
+            --text: #000000;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 15px 10px;
+            margin: 0;
+            line-height: 1.5;
+            font-size: 20px;
+        }
+        
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            background: var(--card);
+            padding: 25px 20px;
+            border-radius: 16px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            border: 2px solid #cbd5e1;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #000000;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 16px;
+            border: 3px solid var(--border);
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 1.1rem;
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            background-color: #eff6ff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+        }
+        
+        .row-2 {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .col-2 {
+            flex: 1;
+        }
+        
+        .pos-section {
+            border: 3px solid var(--primary);
+            margin-bottom: 35px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .pos-title {
+            font-weight: 900;
+            font-size: 1.3rem;
+            margin-top: -38px;
+            margin-bottom: 20px;
+            background-color: var(--primary);
+            color: white;
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-transform: uppercase;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 1.4rem;
+            color: white;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            text-transform: uppercase;
+        }
+        
+        button:active {
+            transform: scale(0.96);
+        }
+        
+        .btn-generate {
+            background-color: #2563eb;
+            border: 3px solid #1e3a8a;
+        }
+        
+        .btn-wa {
+            background-color: #16a34a;
+            border: 3px solid #14532d;
+            margin-top: 10px;
+        }
+        
+        textarea#hasilLaporan {
+            height: 350px;
+            resize: vertical;
+            background-color: #f1f5f9;
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            border: 3px dashed var(--primary);
+        }
+        
+        .help-text {
+            font-size: 1rem;
+            color: #d97706;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📋 LAP CEK ASSET SSB GROUP</h2>
+
+    <div class="card">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>📅 Bulan & Tahun</label>
+            <input type="text" id="bulan" value="APRIL 2026" placeholder="Contoh: APRIL 2026">
+        </div>
+    </div>
+
+    <div id="lokasiContainer"></div>
+
+    <div class="card">
+        <div class="button-group">
+            <button class="btn-generate" onclick="generateReport()">⬇️ 1. BUAT LAPORAN ⬇️</button>
+        </div>
+        
+        <textarea id="hasilLaporan" readonly placeholder="Hasil teks akan muncul di sini otomatis setelah tombol ditekan..."></textarea>
+        
+        <div class="button-group">
+            <button class="btn-wa" onclick="salinLaporan()">✅ 2. SALIN HASIL LAPORAN</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Daftar 8 Lokasi Asset
+    const daftarLokasi = [
+        'By Pass',
+        'Dawi-Dawi',
+        'Pelambua',
+        'Tambea',
+        'Hakatotobu',
+        'Lawania',
+        'Sapura (KM 10)',
+        'Kolaka'
+    ];
+
+    const lokasiContainer = document.getElementById('lokasiContainer');
+    let lokasiHTML = '';
+    
+    daftarLokasi.forEach((namaLokasi, index) => {
+        let i = index + 1;
+        lokasiHTML += `
+        <div class="pos-section">
+            <div class="pos-title">📌 ${i}. ${namaLokasi}</div>
+            
+            <div class="form-group">
+                <div class="row-2">
+                    <div class="col-2">
+                        <label>📆 Tgl</label>
+                        <input type="text" id="tgl${i}" placeholder="Cth: 12">
+                    </div>
+                    <div class="col-2">
+                        <label>👮 Nama</label>
+                        <input type="text" id="petugas${i}" placeholder="Nama...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>🔍 Status</label>
+                <select id="status${i}">
+                    <option value="👍">👍 AMAN</option>
+                    <option value="❗">❗ ADA TEMUAN</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>📝 Catatan</label>
+                <span class="help-text">*Kosongkan jika aman</span>
+                <input type="text" id="catatan${i}" placeholder="Ketik temuan di sini...">
+            </div>
+        </div>
+        `;
+    });
+    
+    lokasiContainer.innerHTML = lokasiHTML;
+
+    function generateReport() {
+        const bulan = document.getElementById('bulan').value || '...';
+        
+        // Header Laporan
+        let teksLaporan = `*Lap Cek Asset SSB Group*\n${bulan} (2x per bulan)\n\n`;
+
+        // Proses 8 Lokasi
+        daftarLokasi.forEach((namaLokasi, index) => {
+            let i = index + 1;
+            const tgl = document.getElementById(`tgl${i}`).value || '...';
+            const petugas = document.getElementById(`petugas${i}`).value || '...';
+            const status = document.getElementById(`status${i}`).value;
+            const catatan = document.getElementById(`catatan${i}`).value;
+
+            // Baris Judul Lokasi (Cth: 1. Lokasi By Pass = 👍)
+            teksLaporan += `${i}. Lokasi ${namaLokasi} = ${status}\n`;
+            
+            // Baris Tgl dan Nama
+            teksLaporan += `    ${tgl}, ${petugas}\n`;
+            
+            // Baris Catatan (hanya muncul jika diisi)
+            if (catatan.trim() !== "") {
+                teksLaporan += `    Cat : ${catatan}\n`;
+            }
+            
+            teksLaporan += `\n`; 
+        });
+
+        // Keterangan Bawah
+        teksLaporan += `Note :\n👍🏻 = aman\n❗= ada temuan`;
+
+        document.getElementById('hasilLaporan').value = teksLaporan.trim();
+    }
+
+    function salinLaporan() {
+        const laporan = document.getElementById('hasilLaporan').value;
+        if (!laporan) {
+            alert('Silakan tekan tombol 1. BUAT LAPORAN terlebih dahulu!');
+            return;
+        }
+
+        navigator.clipboard.writeText(laporan).then(() => {
+            alert('✅ Teks berhasil disalin! Silakan buka WhatsApp dan tempel (paste) pesannya.');
+        }).catch(err => {
+            alert('Gagal menyalin teks otomatis, silakan salin manual dari kotak teks.');
+        });
+    }
+</script>
+
+</body>
+</html>
